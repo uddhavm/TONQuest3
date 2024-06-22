@@ -59,8 +59,8 @@ function jettonMinterInitData(
 async function deployContract() {
     const codeCell = Cell.fromBoc(Buffer.from(hex,"hex"))[0];
 
-    const ownerAddress = Address.parse("kQCj2gVRdFS0qOZnUFXdMliONgSANYXfQUDMsjd8fbTW-aAI");
-    const metadataStr = "EnterYourOwnJetton2"
+    const ownerAddress = Address.parse("kQCleaFINJnYubbS3P1n5_Zkf-X9heGUUlMsnatdEpRyX3ho");
+    const metadataStr = "HTTPS://WWW.UDDHAV.ME"
     const dataCell = jettonMinterInitData(ownerAddress,metadataStr);   
 
     const stateInit: StateInit = {

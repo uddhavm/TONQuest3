@@ -7,7 +7,8 @@ async function onchainScript() {
     //https://github.com/ton-blockchain/TEPs/blob/master/text/0074-jettons-standard.md
     //const address = Address.parse('EQCD6lITaOdUkIRibdZTda4gUHi20J1Go7yGkKARA3kCUv9X');
     const address = Address.parse('kQASJ_jb0Q2VDINksRn0jFupj-4oNJU_P9lD95jhW5CxWRG4');
-
+    // sending my new jetton to ^
+    
     let transactionLink =
     'https://app.tonkeeper.com/transfer/' +
     address.toString({
@@ -16,7 +17,7 @@ async function onchainScript() {
     "?" +
     qs.stringify({
         text: "tonspeedrun3",
-        amount: toNano("1.1").toString(10),
+        amount: toNano("0.01").toString(10),
     });
 
     console.log("Transaction link:",transactionLink);

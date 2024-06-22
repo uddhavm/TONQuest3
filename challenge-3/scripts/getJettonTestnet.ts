@@ -3,7 +3,7 @@ import { Address, Cell } from 'ton-core';
 
 
 
-// Data from mainnet
+// Data from testnet
 export const toncenter = new TonClient({
 	endpoint: 'https://testnet.toncenter.com/api/v2/jsonRPC',
 });
@@ -12,7 +12,8 @@ export const toncenter = new TonClient({
 //export const jettonAddress = Address.parse('EQCD6lITaOdUkIRibdZTda4gUHi20J1Go7yGkKARA3kCUv9X');
 //https://tonscan.org/jetton/EQD0vdSA_NedR9uvbgN9EikRX-suesDxGeFg69XQMavfLqIw
 
-export const jettonAddress = Address.parse('kQASJ_jb0Q2VDINksRn0jFupj-4oNJU_P9lD95jhW5CxWRG4');
+export const jettonAddress = Address.parse('kQCleaFINJnYubbS3P1n5_Zkf-X9heGUUlMsnatdEpRyX3ho');
+//https://testnet.tonscan.org/address/kQCTAO2i_5GnNzzLdPljd1WE5ZENic2zd1_Jl_tLL9hBJ3Pr
 
 const OFF_CHAIN_CONTENT_PREFIX = 0x01
 
@@ -50,25 +51,29 @@ export function decodeOffChainContent(content: Cell) {
 
 
 export async function getJettonData() {
+  try {
+    let { stack } = await toncenter.callGetMethod(
+      jettonAddress, 
+      'get_jetton_data'
+    );
+    //(int total_supply, int mintable, slice admin_address, cell jetton_content, cell jetton_wallet_code)
+    let totalSupply = stack.readBigNumber();
+    let mintable = stack.readBigNumber(); //flag which indicates whether number of jettons can increase
+    
+    let adminAddress = stack.readAddress();
+    let jettonContent = stack.readCell();
+    let jettonWalletCode = stack.readCell();
 
-	let { stack } = await toncenter.callGetMethod(
-		jettonAddress, 
-		'get_jetton_data'
-	);
-	//(int total_supply, int mintable, slice admin_address, cell jetton_content, cell jetton_wallet_code)
-	let totalSupply = stack.readBigNumber();
-	let mintable = stack.readBigNumber(); //flag which indicates whether number of jettons can increase
-	
-	let adminAddress = stack.readAddress();
-	let jettonContent = stack.readCell();
-	let jettonWalletCode = stack.readCell();
-
-	console.log('Jetton info, from get_jetton_data() method:')	
-	console.log('Total Supply: ', totalSupply.toString());
-    console.log('Mintable: ', mintable.toString());
-	console.log('Admin adress:', adminAddress);
-	console.log('Jetton Content Root: ', decodeOffChainContent(jettonContent));
-    //https://ipfs.io/ipfs/bafkreiast4fqlkp4upyu2cvo7fn7aabjusx765yzvqitsr4rpwfvhjguhy
-}
+    console.log('Jetton info, from get_jetton_data() method:')	
+    console.log('Total Supply: ', totalSupply.toString());
+      console.log('Mintable: ', mintable.toString());
+    console.log('Admin adress:', adminAddress);
+    console.log('Jetton Content Root: ', decodeOffChainContent(jettonContent));
+      //https://ipfs.io/ipfs/bafkreiast4fqlkp4upyu2cvo7fn7aabjusx765yzvqitsr4rpwfvhjguhy
+  } catch (error) {
+      console.error('Failed to get jetton data:', error);
+      // Additional logging or error handling here
+    }
+  }
 
 getJettonData();
