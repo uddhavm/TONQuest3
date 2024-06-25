@@ -16,7 +16,8 @@ const jettonWalletAddress = Address.parse('EQCTi9JJeDTP-4lgAZzu4Pk14QPvWjdKx1KbD
 
 async function getJettonWalletData() {
 	try {
-		let { stack } = await toncenter.callGetMethod(
+		console.log('Attempting to get wallet data for address:', jettonWalletAddress);
+		let { stack } = await toncenter.runMethod(
 			jettonWalletAddress , 
 			'get_wallet_data'
 		);
@@ -35,5 +36,4 @@ async function getJettonWalletData() {
 		// Additional logging or error handling here
 	  }
 }
-
 getJettonWalletData();
